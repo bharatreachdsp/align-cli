@@ -1,12 +1,21 @@
 # @align-agent/cli
 
+## 0.1.3
+
+### Patch Changes
+
+- The first published release (0.1.0 to 0.1.2 were tagged but never reached npm). Same code as 0.1.1; only tests
+  changed for GitHub's macOS runners: in-process hook tests use the git `align init` would record (the shim's
+  `ALIGN_GIT`) instead of the slow `/usr/bin/git` wrapper, macOS gets 30 s per test and two test files at a time, and the over-1,024-character
+  path test is skipped on macOS, where such a path cannot exist.
+
 ## 0.1.2
 
 ### Patch Changes
 
-- The first published release (0.1.0 and 0.1.1 were tagged but never reached npm). Same code as 0.1.1; only tests
-  changed: the git-hook tests set a committer name, so they pass on an account with no git identity (GitHub's
-  runner), and a transcript test resolves its temporary directory, which is a symlink on macOS.
+- Tagged, not published (both macOS test jobs failed; see 0.1.3). Only tests changed: the git-hook tests set a
+  committer name, so they pass on an account with no git identity (GitHub's runner), and a transcript test resolves
+  its temporary directory, which is a symlink on macOS.
 
 ## 0.1.1
 

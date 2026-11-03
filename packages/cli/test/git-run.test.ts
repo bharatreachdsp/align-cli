@@ -133,28 +133,32 @@ describe("git-hook prepare-commit-msg and post-commit", () => {
     expect(event.payload.message).toContain("Use Redis for the cart lock");
   });
 
-  it("leaves out a file name over 1,024 characters before redaction, and counts it (round 5)", async () => {
-    sb = sandbox();
-    register();
-    const paths = alignPaths(sb.alignHome);
-    const deep = join(...Array.from({ length: 5 }, (_, i) => `${String(i)}${"d".repeat(249)}`), "f.ts");
-    expect(deep.length).toBeGreaterThan(1024);
-    mkdirSync(join(sb.repo, dirname(deep)), { recursive: true });
-    writeFileSync(join(sb.repo, deep), "x\n");
-    writeFileSync(join(sb.repo, "short.ts"), "x\n");
-    gitIn(sb.repo, "add", ".");
-    gitIn(sb.repo, "commit", "-q", "-m", "long names");
-    await postCommit({ paths, cwd: sb.repo, now: () => now, env: {} });
-    const dir = join(
-      sb.alignHome,
-      "spool",
-      readdirSync(join(sb.alignHome, "spool")).find((d) => /^[0-9a-f]{16}$/.test(d)) ?? "",
-    );
-    const [file] = readdirSync(dir);
-    const [event] = JSON.parse(readFileSync(join(dir, file as string), "utf8")).events;
-    expect(event.payload.files).toEqual(["short.ts"]);
-    expect(readFileSync(join(sb.alignHome, "logs", "align.log"), "utf8")).toMatch(/git path_too_long/);
-  });
+  // macOS caps a path at 1,024 bytes (PATH_MAX): the test cannot create this file there, and git cannot check it out.
+  it.skipIf(process.platform === "darwin")(
+    "leaves out a file name over 1,024 characters before redaction, and counts it (round 5)",
+    async () => {
+      sb = sandbox();
+      register();
+      const paths = alignPaths(sb.alignHome);
+      const deep = join(...Array.from({ length: 5 }, (_, i) => `${String(i)}${"d".repeat(249)}`), "f.ts");
+      expect(deep.length).toBeGreaterThan(1024);
+      mkdirSync(join(sb.repo, dirname(deep)), { recursive: true });
+      writeFileSync(join(sb.repo, deep), "x\n");
+      writeFileSync(join(sb.repo, "short.ts"), "x\n");
+      gitIn(sb.repo, "add", ".");
+      gitIn(sb.repo, "commit", "-q", "-m", "long names");
+      await postCommit({ paths, cwd: sb.repo, now: () => now, env: {} });
+      const dir = join(
+        sb.alignHome,
+        "spool",
+        readdirSync(join(sb.alignHome, "spool")).find((d) => /^[0-9a-f]{16}$/.test(d)) ?? "",
+      );
+      const [file] = readdirSync(dir);
+      const [event] = JSON.parse(readFileSync(join(dir, file as string), "utf8")).events;
+      expect(event.payload.files).toEqual(["short.ts"]);
+      expect(readFileSync(join(sb.alignHome, "logs", "align.log"), "utf8")).toMatch(/git path_too_long/);
+    },
+  );
 
   it("keeps a session trailer only when this CLI added it for this commit (D472, #94 security review)", async () => {
     sb = sandbox();

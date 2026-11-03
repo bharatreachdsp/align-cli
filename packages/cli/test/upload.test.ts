@@ -20,6 +20,7 @@ import { MOCK_ORG, MOCK_USER, mockSessionNotice } from "@align/core/api";
 import { afterEach, describe, expect, it } from "vitest";
 import { CredentialStore } from "../src/credentials";
 import { envelope, type Repo, type TraceEvent } from "../src/hook/events";
+import { repoFacts } from "../src/hook/home";
 import { readState } from "../src/hook/state";
 import { alignPaths, type Paths, repoHash } from "../src/paths";
 import { setOptedIn, upsertRepo } from "../src/registry";
@@ -304,6 +305,10 @@ describe("align upload: sending the spool", () => {
       hook_event_name: "SessionStart",
       source: "startup",
     };
+    expect(
+      await repoFacts(sb.repo),
+      "the hooks' git answered within 300 ms (ALIGN_GIT, test/setup-git.ts)",
+    ).not.toBeNull();
     const hook = await cli(["hook", "session-start", "--harness", "claude-code"], sb, {
       internalHome: sb.alignHome,
       readStdin: async () => Buffer.from(JSON.stringify(p)),
@@ -557,6 +562,10 @@ describe("align upload: sending the spool", () => {
       });
     const p = (k: string) => ({ ...payloads[k], transcript_path: transcript });
     writeFileSync(transcript, "");
+    expect(
+      await repoFacts(sb.repo),
+      "the hooks' git answered within 300 ms (ALIGN_GIT, test/setup-git.ts)",
+    ).not.toBeNull();
     await hook("session-start", p("SessionStart"));
     const thirds = [all.slice(0, 3), all.slice(3, 6), all.slice(6)];
     for (const [i, part] of thirds.entries()) {
