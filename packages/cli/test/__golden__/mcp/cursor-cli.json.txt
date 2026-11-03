@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Mcp(align:get_context)",
+      "Mcp(align:get_decision)",
+      "Mcp(align:search_decisions)",
+      "Mcp(align:list_open_questions)",
+      "Mcp(align:get_contract)"
+    ],
+    "deny": []
+  }
+}

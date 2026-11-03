@@ -1,0 +1,51 @@
+{
+  "SessionStart": {
+    "session_id": "0192f6a8-1111-7000-8000-00000000c0de",
+    "transcript_path": "/home/someone/.codex/sessions/2026/10/22/rollout-2026-10-22T09-00-00-0192f6a8-1111-7000-8000-00000000c0de.jsonl",
+    "cwd": "__ROOT__",
+    "model": "synthetic-model",
+    "permission_mode": "default",
+    "hook_event_name": "SessionStart",
+    "source": "startup"
+  },
+  "UserPromptSubmit": {
+    "session_id": "0192f6a8-1111-7000-8000-00000000c0de",
+    "transcript_path": "/home/someone/.codex/sessions/2026/10/22/rollout-2026-10-22T09-00-00-0192f6a8-1111-7000-8000-00000000c0de.jsonl",
+    "cwd": "__ROOT__",
+    "model": "synthetic-model",
+    "permission_mode": "default",
+    "hook_event_name": "UserPromptSubmit",
+    "turn_id": "turn-1",
+    "prompt": "Use a Redis lock for the cart checkout."
+  },
+  "UserPromptSubmitSubagent": {
+    "session_id": "0192f6a8-1111-7000-8000-00000000c0de",
+    "transcript_path": "/home/someone/.codex/sessions/2026/10/22/rollout-2026-10-22T09-00-00-0192f6a8-1111-7000-8000-00000000c0de.jsonl",
+    "cwd": "__ROOT__",
+    "model": "synthetic-model",
+    "permission_mode": "default",
+    "hook_event_name": "UserPromptSubmit",
+    "turn_id": "turn-2",
+    "prompt": "SYNTHETIC SUBAGENT PROMPT",
+    "agent_id": "agent-1",
+    "agent_type": "explorer"
+  },
+  "Stop": {
+    "session_id": "0192f6a8-1111-7000-8000-00000000c0de",
+    "transcript_path": "/home/someone/.codex/sessions/2026/10/22/rollout-2026-10-22T09-00-00-0192f6a8-1111-7000-8000-00000000c0de.jsonl",
+    "cwd": "__ROOT__",
+    "model": "synthetic-model",
+    "permission_mode": "default",
+    "hook_event_name": "Stop",
+    "turn_id": "turn-1",
+    "stop_hook_active": false,
+    "last_assistant_message": "I switched the checkout to a Redis lock."
+  },
+  "SessionEnd": {
+    "session_id": "0192f6a8-1111-7000-8000-00000000c0de",
+    "transcript_path": "/home/someone/.codex/sessions/2026/10/22/rollout-2026-10-22T09-00-00-0192f6a8-1111-7000-8000-00000000c0de.jsonl",
+    "cwd": "__ROOT__",
+    "hook_event_name": "SessionEnd",
+    "reason": "other"
+  }
+}

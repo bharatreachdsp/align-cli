@@ -1,0 +1,188 @@
+# The public CLI mirror's only workflow (ALIGN L19). Kept in the private repository at
+# packages/cli/mirror/workflows/publish.yml and placed here by its release sync; edits made in the mirror are
+# overwritten by the next release. It publishes @align-agent/cli to npm with trusted publishing (OIDC): no
+# token exists anywhere, and the statement of provenance links the version to this run and commit.
+#
+#   test      macOS and Linux × Node 22 and 24: the path guard, the release checks, typecheck, the CLI's unit
+#             tests (synthetic fixtures, temporary homes, servers on 127.0.0.1 only; the private repository's CI
+#             runs them on Linux on every change, this is where they run on macOS; the hook-latency suite runs
+#             there only), a release build and the clean-machine smoke test
+#   package   the release build, `npm pack` of it, the smoke test of that very tarball; uploaded as an artifact
+#   publish   the only job that may ask for an OIDC token, in the `npm` environment (the trusted publisher names it):
+#             no checkout of dependencies, no install, no build; it checks the tarball is the one `package` made and
+#             runs `npm publish <tarball> --ignore-scripts --provenance` with npm 11.6.2, itself checked against
+#             its pinned integrity
+#   registry  after publish, only when release.json says so (a stable version, once the final name is applied; L41):
+#             the MCP Registry entry server.json, through mcp-publisher 1.8.1 (checked against its pinned sha256)
+#             signed in with this run's GitHub OIDC token (`login github-oidc`); no token anywhere
+name: publish
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+jobs:
+  test:
+    name: test (${{ matrix.os }}, Node ${{ matrix.node }})
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        node: ["22", "24"]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: ${{ matrix.node }}
+          package-manager-cache: false
+      - name: No personal paths in the tree
+        run: node scripts/path-guard.mjs .
+      - name: The tag names the version being released
+        env:
+          TAG: ${{ github.ref_name }}
+        run: node scripts/release-check.mjs "$TAG"
+      - name: Install (frozen lockfile)
+        run: |
+          corepack enable
+          pnpm install --frozen-lockfile
+      - name: Typecheck
+        run: pnpm typecheck
+      - name: Unit tests
+        run: pnpm test
+      - name: Release build and clean-machine smoke test
+        run: |
+          ALIGN_DEFAULT_SERVER="$(node -p "require('./release.json').defaultServer")"
+          export ALIGN_DEFAULT_SERVER
+          ALIGN_RELEASE=1 pnpm build
+          bash scripts/smoke.sh --tarball
+
+  package:
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      sha256: ${{ steps.pack.outputs.sha256 }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24"
+          package-manager-cache: false
+      - name: Release build
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          node scripts/release-check.mjs "$TAG"
+          corepack enable
+          pnpm install --frozen-lockfile
+          ALIGN_DEFAULT_SERVER="$(node -p "require('./release.json').defaultServer")"
+          export ALIGN_DEFAULT_SERVER
+          ALIGN_RELEASE=1 pnpm build
+      - name: Pack the tarball that is published
+        id: pack
+        working-directory: packages/cli
+        run: |
+          node ../../scripts/release-check.mjs --strip-dev package.json
+          mkdir -p ../../out
+          npm pack --ignore-scripts --pack-destination ../../out
+          tgz="$(ls ../../out/*.tgz)"
+          echo "sha256=$(sha256sum "$tgz" | cut -d ' ' -f 1)" >> "$GITHUB_OUTPUT"
+      - name: Clean-machine smoke test of that tarball
+        run: bash scripts/smoke.sh --tgz out/*.tgz
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: package
+          path: out/*.tgz
+          if-no-files-found: error
+          retention-days: 7
+
+  publish:
+    needs: package
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: npm
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24"
+          registry-url: "https://registry.npmjs.org"
+          package-manager-cache: false
+      - name: npm 11.6.2, checked against its pinned integrity (trusted publishing needs 11.5.1 or later)
+        env:
+          NPM_INTEGRITY: sha512-7iKzNfy8lWYs3zq4oFPa8EXZz5xt9gQNKJZau3B1ErLBb6bF7sBJ00x09485DOvRT2l5Gerbl3VlZNT57MxJVA==
+        run: |
+          curl --fail --silent --show-error --location --proto '=https' -o "$RUNNER_TEMP/npm.tgz" \
+            https://registry.npmjs.org/npm/-/npm-11.6.2.tgz
+          node scripts/release-check.mjs --integrity "$RUNNER_TEMP/npm.tgz" "$NPM_INTEGRITY"
+          npm install --global --ignore-scripts "$RUNNER_TEMP/npm.tgz"
+          node scripts/release-check.mjs --npm "$(npm --version)"
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: package
+          path: out
+      - name: The tarball is the one the package job built and tested
+        env:
+          TAG: ${{ github.ref_name }}
+          SHA256: ${{ needs.package.outputs.sha256 }}
+        run: |
+          tgz="$(ls out/*.tgz)"
+          [ "$(sha256sum "$tgz" | cut -d ' ' -f 1)" = "$SHA256" ]
+          tar -xOzf "$tgz" package/package.json > "$RUNNER_TEMP/packed.json"
+          node scripts/release-check.mjs --packed "$TAG" "$RUNNER_TEMP/packed.json"
+      - name: Publish with trusted publishing
+        run: |
+          DIST_TAG="$(node -p "require('./release.json').distTag")"
+          npm publish "$(ls out/*.tgz)" --ignore-scripts --provenance --access public --tag "$DIST_TAG"
+
+  registry:
+    needs: publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Only a stable release under the final name goes to the MCP Registry
+        id: gate
+        run: echo "publish=$(node -p "require('./release.json').mcpRegistry === true")" >> "$GITHUB_OUTPUT"
+      - name: mcp-publisher 1.8.1, checked against its pinned sha256
+        if: steps.gate.outputs.publish == 'true'
+        env:
+          MCP_PUBLISHER_SHA256: a06c9096dcb9727c13555b6be26c7effa707b01f06a4c561ba7a3635443cf2cc
+        run: |
+          curl --fail --silent --show-error --location --proto '=https' -o "$RUNNER_TEMP/mcp-publisher.tgz" \
+            https://github.com/modelcontextprotocol/registry/releases/download/v1.8.1/mcp-publisher_linux_amd64.tar.gz
+          echo "$MCP_PUBLISHER_SHA256  $RUNNER_TEMP/mcp-publisher.tgz" | sha256sum --check --strict
+          tar -xzf "$RUNNER_TEMP/mcp-publisher.tgz" -C "$RUNNER_TEMP" mcp-publisher
+      - name: The entry names the version this run published
+        if: steps.gate.outputs.publish == 'true'
+        env:
+          TAG: ${{ github.ref_name }}
+        run: node -e 'const s=require("./server.json");const v=process.env.TAG.slice(1);if(s.version!==v||s.packages[0].version!==v)process.exit(1)'
+      - name: Publish to the MCP Registry
+        if: steps.gate.outputs.publish == 'true'
+        run: |
+          "$RUNNER_TEMP/mcp-publisher" login github-oidc
+          "$RUNNER_TEMP/mcp-publisher" publish

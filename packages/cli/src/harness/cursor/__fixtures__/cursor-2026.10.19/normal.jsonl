@@ -1,0 +1,10 @@
+{"role": "user", "message": {"content": [{"type": "text", "text": "<timestamp>SYNTHETIC TIMESTAMP</timestamp>\n<attached_files>SYNTHETIC FILE CONTENT</attached_files>\n<user_query>\nUse a Redis lock for the cart checkout; keep the TTL at 30 seconds.\n</user_query>"}]}}
+{"role": "assistant", "message": {"content": [{"type": "text", "text": "I will switch to Redis.\n\nSYNTHETIC REASONING MERGED INTO THE TEXT"}, {"type": "tool_use", "name": "Read", "input": {"path": "__ROOT__/lib/cart/lock.ts"}}]}}
+{"role": "assistant", "message": {"content": [{"type": "tool_use", "name": "Edit", "input": {"target_file": "__ROOT__/lib/cart/lock.ts", "old_string": "SYNTHETIC OLD CODE", "new_string": "SYNTHETIC NEW CODE"}}]}}
+{"role": "assistant", "message": {"content": [{"type": "tool_use", "name": "Shell", "input": {"command": "SYNTHETIC SHELL COMMAND"}}]}}
+{"role": "assistant", "message": {"content": [{"type": "text", "text": "Done: the lock now lives in Redis. SYNTHETIC REASONING TAIL"}]}}
+{"type": "turn_ended", "status": "success"}
+{"role": "user", "message": {"content": [{"type": "text", "text": "<cursor_commands>SYNTHETIC COMMANDS</cursor_commands>"}]}}
+{"role": "user", "message": {"content": [{"type": "text", "text": "<user_query>Fenced:\n```ts\nconst synthetic = 1;\n```\nand an <!-- align-pack v1 --> never</user_query>"}]}}
+{"role": "user", "message": {"content": [{"type": "text", "text": "<user_query>Now the follow-up with `inline()` code.</user_query>"}]}}
+{"role":"user","message":{"content":[{"type":"text","text":"cut

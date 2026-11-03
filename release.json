@@ -1,0 +1,8 @@
+{
+  "version": "0.1.0",
+  "channel": "latest",
+  "distTag": "latest",
+  "defaultServer": "https://align.bharatreachdsp.com",
+  "sourceCommit": "dfd9e47534558554712f9d565787d863b807a9e5",
+  "mcpRegistry": false
+}

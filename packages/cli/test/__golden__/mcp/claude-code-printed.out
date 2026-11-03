@@ -1,0 +1,1 @@
+  · Claude Code            MCP server: claude is not on PATH; run this to add it: claude mcp add --scope local --transport stdio align -- <HOME>/.align/bin/align mcp

@@ -1,0 +1,124 @@
+{
+  "sessionStart": {
+    "conversation_id": "7d3e1f20-8b4a-4c55-a1e2-3f9b6c0d2a44",
+    "generation_id": "gen-synthetic-1",
+    "model": "synthetic-model",
+    "model_id": "synthetic-model",
+    "model_params": [
+      {
+        "id": "effort",
+        "value": "medium"
+      }
+    ],
+    "cursor_version": "2026.10.19",
+    "workspace_roots": ["__ROOT__"],
+    "user_email": "SYNTHETIC-EMAIL@example.invalid",
+    "transcript_path": "/home/someone/.cursor/projects/work-checkout/agent-transcripts/7d3e1f20-8b4a-4c55-a1e2-3f9b6c0d2a44/7d3e1f20-8b4a-4c55-a1e2-3f9b6c0d2a44.jsonl",
+    "hook_event_name": "sessionStart",
+    "session_id": "7d3e1f20-8b4a-4c55-a1e2-3f9b6c0d2a44",
+    "is_background_agent": false,
+    "composer_mode": "agent"
+  },
+  "beforeSubmitPrompt": {
+    "conversation_id": "7d3e1f20-8b4a-4c55-a1e2-3f9b6c0d2a44",
+    "generation_id": "gen-synthetic-1",
+    "model": "synthetic-model",
+    "model_id": "synthetic-model",
+    "model_params": [
+      {
+        "id": "effort",
+        "value": "medium"
+      }
+    ],
+    "cursor_version": "2026.10.19",
+    "workspace_roots": ["__ROOT__"],
+    "user_email": "SYNTHETIC-EMAIL@example.invalid",
+    "transcript_path": "/home/someone/.cursor/projects/work-checkout/agent-transcripts/7d3e1f20-8b4a-4c55-a1e2-3f9b6c0d2a44/7d3e1f20-8b4a-4c55-a1e2-3f9b6c0d2a44.jsonl",
+    "hook_event_name": "beforeSubmitPrompt",
+    "prompt": "Use a Redis lock for the cart checkout.",
+    "attachments": [
+      {
+        "type": "file",
+        "file_path": "__ROOT__/lib/cart/lock.ts"
+      }
+    ]
+  },
+  "afterAgentResponse": {
+    "conversation_id": "7d3e1f20-8b4a-4c55-a1e2-3f9b6c0d2a44",
+    "generation_id": "gen-synthetic-1",
+    "model": "synthetic-model",
+    "model_id": "synthetic-model",
+    "model_params": [
+      {
+        "id": "effort",
+        "value": "medium"
+      }
+    ],
+    "cursor_version": "2026.10.19",
+    "workspace_roots": ["__ROOT__"],
+    "user_email": "SYNTHETIC-EMAIL@example.invalid",
+    "transcript_path": "/home/someone/.cursor/projects/work-checkout/agent-transcripts/7d3e1f20-8b4a-4c55-a1e2-3f9b6c0d2a44/7d3e1f20-8b4a-4c55-a1e2-3f9b6c0d2a44.jsonl",
+    "hook_event_name": "afterAgentResponse",
+    "text": "I switched the checkout to a Redis lock."
+  },
+  "afterAgentThought": {
+    "conversation_id": "7d3e1f20-8b4a-4c55-a1e2-3f9b6c0d2a44",
+    "generation_id": "gen-synthetic-1",
+    "model": "synthetic-model",
+    "model_id": "synthetic-model",
+    "model_params": [
+      {
+        "id": "effort",
+        "value": "medium"
+      }
+    ],
+    "cursor_version": "2026.10.19",
+    "workspace_roots": ["__ROOT__"],
+    "user_email": "SYNTHETIC-EMAIL@example.invalid",
+    "transcript_path": "/home/someone/.cursor/projects/work-checkout/agent-transcripts/7d3e1f20-8b4a-4c55-a1e2-3f9b6c0d2a44/7d3e1f20-8b4a-4c55-a1e2-3f9b6c0d2a44.jsonl",
+    "hook_event_name": "afterAgentThought",
+    "text": "SYNTHETIC PRIVATE THINKING",
+    "duration_ms": 120
+  },
+  "stop": {
+    "conversation_id": "7d3e1f20-8b4a-4c55-a1e2-3f9b6c0d2a44",
+    "generation_id": "gen-synthetic-1",
+    "model": "synthetic-model",
+    "model_id": "synthetic-model",
+    "model_params": [
+      {
+        "id": "effort",
+        "value": "medium"
+      }
+    ],
+    "cursor_version": "2026.10.19",
+    "workspace_roots": ["__ROOT__"],
+    "user_email": "SYNTHETIC-EMAIL@example.invalid",
+    "transcript_path": "/home/someone/.cursor/projects/work-checkout/agent-transcripts/7d3e1f20-8b4a-4c55-a1e2-3f9b6c0d2a44/7d3e1f20-8b4a-4c55-a1e2-3f9b6c0d2a44.jsonl",
+    "hook_event_name": "stop",
+    "status": "completed",
+    "loop_count": 0
+  },
+  "sessionEnd": {
+    "conversation_id": "7d3e1f20-8b4a-4c55-a1e2-3f9b6c0d2a44",
+    "generation_id": "gen-synthetic-1",
+    "model": "synthetic-model",
+    "model_id": "synthetic-model",
+    "model_params": [
+      {
+        "id": "effort",
+        "value": "medium"
+      }
+    ],
+    "cursor_version": "2026.10.19",
+    "workspace_roots": ["__ROOT__"],
+    "user_email": "SYNTHETIC-EMAIL@example.invalid",
+    "transcript_path": "/home/someone/.cursor/projects/work-checkout/agent-transcripts/7d3e1f20-8b4a-4c55-a1e2-3f9b6c0d2a44/7d3e1f20-8b4a-4c55-a1e2-3f9b6c0d2a44.jsonl",
+    "hook_event_name": "sessionEnd",
+    "session_id": "7d3e1f20-8b4a-4c55-a1e2-3f9b6c0d2a44",
+    "reason": "completed",
+    "duration_ms": 45000,
+    "is_background_agent": false,
+    "final_status": "completed"
+  }
+}

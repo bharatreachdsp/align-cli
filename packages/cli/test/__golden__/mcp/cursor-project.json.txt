@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "align": {
+      "command": "<HOME>/.align/bin/align",
+      "args": [
+        "mcp",
+        "--cwd",
+        "${workspaceFolder}"
+      ]
+    }
+  }
+}

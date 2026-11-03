@@ -1,0 +1,6 @@
+1 of 3  SUPERSEDES AL-3  decision · 19 Sep 2026 · from a session · only you can see it
+“Checkout API returns 409 on a stale cart version, never 500.”
+receipt  transcript lines 212–219: “let's not pull in redis for this, advisory locks are enough and we already have
+         postgres”
+
+[c] confirm as P-8  [s] supersede AL-3  [r] reject  [k] skip  [e] edit wording  [h] share  [q] quit

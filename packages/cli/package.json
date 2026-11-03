@@ -1,0 +1,49 @@
+{
+  "name": "@align-agent/cli",
+  "version": "0.1.0",
+  "description": "Capture, confirm and serve your team's decisions from Claude Code, Cursor and Codex sessions.",
+  "mcpName": "io.github.bharatreachdsp/align",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bharatreachdsp/align-cli.git"
+  },
+  "homepage": "https://github.com/bharatreachdsp/align-cli#readme",
+  "bugs": {
+    "url": "https://github.com/bharatreachdsp/align-cli/issues"
+  },
+  "type": "module",
+  "bin": {
+    "align": "dist/align.mjs"
+  },
+  "files": [
+    "dist/align.mjs",
+    "LICENSE",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=22.14"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit -p .",
+    "test": "vitest run && vitest run --config vitest.latency.config.ts",
+    "build": "tsup",
+    "prepack": "tsup"
+  },
+  "devDependencies": {
+    "@align/core": "workspace:*",
+    "@modelcontextprotocol/client": "2.3.1",
+    "@modelcontextprotocol/server": "2.3.1",
+    "@types/node": "catalog:",
+    "commander": "^15.0.0",
+    "jsonc-parser": "3.3.1",
+    "tsup": "catalog:",
+    "tsx": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:",
+    "zod": "catalog:"
+  }
+}

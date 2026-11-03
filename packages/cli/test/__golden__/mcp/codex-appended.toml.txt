@@ -1,0 +1,9 @@
+model = "gpt-x"
+
+[mcp_servers.notes]
+command = "/opt/notes"
+
+# Added by align init; align uninstall removes this table.
+[mcp_servers.align]
+command = "<HOME>/.align/bin/align"
+args = ["mcp"]

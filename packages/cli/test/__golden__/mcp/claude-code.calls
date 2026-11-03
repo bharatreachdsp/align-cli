@@ -1,0 +1,2 @@
+claude <REPO> mcp add --scope local --transport stdio align -- <HOME>/.align/bin/align mcp
+claude <REPO> mcp remove --scope local align

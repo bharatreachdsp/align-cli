@@ -1,0 +1,45 @@
+## gemini
+# Gemini CLI: merge into ~/.gemini/settings.json (or run: gemini mcp add align /home/someone/.align/bin/align mcp)
+{
+  "mcpServers": {
+    "align": {
+      "command": "/home/someone/.align/bin/align",
+      "args": [
+        "mcp"
+      ]
+    }
+  }
+}
+
+## hermes
+# Hermes Agent: add to ~/.hermes/config.yaml
+mcp_servers:
+  align:
+    command: "/home/someone/.align/bin/align"
+    args: ["mcp"]
+
+## openclaw
+# OpenClaw: add to the MCP servers in its configuration
+{
+  "mcpServers": {
+    "align": {
+      "command": "/home/someone/.align/bin/align",
+      "args": [
+        "mcp"
+      ]
+    }
+  }
+}
+
+## generic
+# Any MCP client that starts stdio servers: command and arguments
+{
+  "mcpServers": {
+    "align": {
+      "command": "/home/someone/.align/bin/align",
+      "args": [
+        "mcp"
+      ]
+    }
+  }
+}

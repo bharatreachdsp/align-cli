@@ -1,0 +1,11 @@
+1 of 3  CONTRADICTED  decision · 12 Sep 2026 · from a session · only you can see it
+“Use Postgres advisory locks for cart checkout, not Redis.”
+why      Redis would add an ops dependency we do not run in production.
+rejected Redis SETNX lock · a distributed-lock library
+receipt  transcript lines 212–219: “let's not pull in redis for this, advisory locks are enough and we already have
+         postgres”
+         commit 4c1e9 · lib/cart/lock.ts: “checkout: advisory lock around cart finalisation”
+conflict lib/cart/lock.ts now imports ioredis (PR #91)
+checks   ALIGN will check: forbid_import: modules ioredis, redis · paths lib/cart/** (accepted)
+
+[c] confirm as P-7  [s] superseded by …  [r] reject  [k] skip  [e] edit wording  [a] accept checks  [h] share  [q] quit

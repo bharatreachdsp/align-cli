@@ -1,0 +1,14 @@
+---
+description: Team decisions for this repository from ALIGN
+alwaysApply: true
+---
+<!-- align-pack v1 -->
+## Team decisions for github.com/acme/checkout (lib/money) · verified 2 hours ago
+Follow these unless the user explicitly decides otherwise. If a request conflicts with one, say so and ask
+before proceeding. Cite ids (e.g. AL-12) when relevant. More: the align MCP tools.
+
+- AL-12 · decision · Money is stored as integer cents. Why: no float rounding.
+
+To record a new team decision the user states, call record_decision.
+
+For the receipt behind an entry (who decided it, where, the exact quote) or anything not listed here, use the align MCP tools.

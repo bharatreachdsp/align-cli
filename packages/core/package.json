@@ -1,0 +1,22 @@
+{
+  "name": "@align/core",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    "./api": "./src/api/index.ts",
+    "./brand": "./src/brand.ts",
+    "./export": "./src/export/index.ts",
+    "./ids": "./src/ids.ts",
+    "./redact": "./src/redact/index.ts",
+    "./remote": "./src/remote.ts",
+    "./checks": "./src/checks/index.ts",
+    "./consent": "./src/consent.ts",
+    "./tools": "./src/tools.ts"
+  },
+  "dependencies": {
+    "re2js": "~2.8.8",
+    "zod": "catalog:"
+  }
+}

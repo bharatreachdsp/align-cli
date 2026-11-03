@@ -1,0 +1,2 @@
+codex <CODEX_HOME> mcp add align -- <HOME>/.align/bin/align mcp
+codex <CODEX_HOME> mcp remove align

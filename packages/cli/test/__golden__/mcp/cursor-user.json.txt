@@ -1,0 +1,15 @@
+// mine
+{
+  "mcpServers": {
+    "notes": {
+      "command": "/opt/notes",
+      "args": []
+    },
+    "align": {
+      "command": "<HOME>/.align/bin/align",
+      "args": [
+        "mcp"
+      ]
+    }
+  }
+}

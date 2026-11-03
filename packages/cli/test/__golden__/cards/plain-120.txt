@@ -1,0 +1,5 @@
+1 of 3  commitment · 24 Sep 2026 · from a session
+“Refund flow ships before the 15 Oct release.”
+receipt  none you can read
+
+[c] confirm as P-9  [s] superseded by …  [r] reject  [k] skip  [e] edit wording  [h] share  [q] quit

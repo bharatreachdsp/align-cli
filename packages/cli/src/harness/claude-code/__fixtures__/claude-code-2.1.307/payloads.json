@@ -1,0 +1,41 @@
+{
+  "SessionStart": {
+    "session_id": "5f0c2a8e-1d4b-4c7a-9e21-7b3f6a0d9c11",
+    "transcript_path": "/home/someone/.claude/projects/-work-checkout/5f0c2a8e-1d4b-4c7a-9e21-7b3f6a0d9c11.jsonl",
+    "cwd": "__ROOT__",
+    "hook_event_name": "SessionStart",
+    "source": "startup"
+  },
+  "UserPromptSubmit": {
+    "session_id": "5f0c2a8e-1d4b-4c7a-9e21-7b3f6a0d9c11",
+    "transcript_path": "/home/someone/.claude/projects/-work-checkout/5f0c2a8e-1d4b-4c7a-9e21-7b3f6a0d9c11.jsonl",
+    "cwd": "__ROOT__",
+    "prompt_id": "00000000-0000-4000-8000-000000000074",
+    "permission_mode": "default",
+    "hook_event_name": "UserPromptSubmit",
+    "prompt": "Use a Redis lock for the cart checkout."
+  },
+  "Stop": {
+    "session_id": "5f0c2a8e-1d4b-4c7a-9e21-7b3f6a0d9c11",
+    "transcript_path": "/home/someone/.claude/projects/-work-checkout/5f0c2a8e-1d4b-4c7a-9e21-7b3f6a0d9c11.jsonl",
+    "cwd": "__ROOT__",
+    "prompt_id": "00000000-0000-4000-8000-000000000075",
+    "permission_mode": "default",
+    "effort": {
+      "level": "high"
+    },
+    "hook_event_name": "Stop",
+    "stop_hook_active": false,
+    "last_assistant_message": "I switched the checkout to a Redis lock.",
+    "background_tasks": [],
+    "session_crons": []
+  },
+  "SessionEnd": {
+    "session_id": "5f0c2a8e-1d4b-4c7a-9e21-7b3f6a0d9c11",
+    "transcript_path": "/home/someone/.claude/projects/-work-checkout/5f0c2a8e-1d4b-4c7a-9e21-7b3f6a0d9c11.jsonl",
+    "cwd": "__ROOT__",
+    "prompt_id": "00000000-0000-4000-8000-000000000076",
+    "hook_event_name": "SessionEnd",
+    "reason": "other"
+  }
+}

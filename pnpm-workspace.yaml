@@ -1,0 +1,12 @@
+packages:
+  - 'packages/*'
+minimumReleaseAge: 10080
+onlyBuiltDependencies:
+  - esbuild
+catalog:
+  '@types/node': '^24.0.0'
+  tsup: '^8.5.0'
+  tsx: '^4.20.0'
+  typescript: '~6.0.3'
+  vitest: '^4.1.0'
+  zod: '^4.1.0'
