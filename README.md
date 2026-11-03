@@ -5,7 +5,7 @@ repositories you opt in, keeps a receipt for every one, and serves your team's c
 agents.
 
 This repository is the public source of the npm package. It is published from here by its own workflow with
-npm's trusted publishing, so every release from `0.1.1` on carries a provenance statement linking it to the
+npm's trusted publishing, so every release from `0.1.2` on carries a provenance statement linking it to the
 commit and workflow run it was built from. (`0.0.0` is an empty placeholder that only reserved the name; it is
 deprecated.)
 

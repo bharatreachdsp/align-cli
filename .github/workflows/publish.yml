@@ -32,7 +32,9 @@ jobs:
   test:
     name: test (${{ matrix.os }}, Node ${{ matrix.node }})
     strategy:
-      fail-fast: true
+      # Every OS × Node pair reports, so one release attempt shows every failure (cli-v0.1.0 and 0.1.1 each stopped
+      # at the first one, and macOS never ran). Publishing still needs all four to pass.
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
         node: ["22", "24"]

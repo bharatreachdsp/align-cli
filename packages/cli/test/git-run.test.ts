@@ -308,6 +308,9 @@ describe("git-hook prepare-commit-msg and post-commit", () => {
     register();
     const paths = alignPaths(sb.alignHome);
     session(now);
+    // A name too: without one, `git var` cannot name the committer on a machine whose account has no git identity
+    // (a CI runner), and the hook then treats the commit as the user's own.
+    gitIn(sb.repo, "config", "user.name", "Me");
     gitIn(sb.repo, "config", "user.email", "me@acme.example");
     const msg = join(sb.dir, "MSG");
     writeFileSync(msg, "reworded\n");
@@ -341,6 +344,9 @@ describe("git-hook prepare-commit-msg and post-commit", () => {
     register();
     const paths = alignPaths(sb.alignHome);
     session(now);
+    // A name too: without one, `git var` cannot name the committer on a machine whose account has no git identity
+    // (a CI runner), and the hook then treats the commit as the user's own.
+    gitIn(sb.repo, "config", "user.name", "Me");
     gitIn(sb.repo, "config", "user.email", "me@acme.example");
     const msg = join(sb.dir, "MSG");
     const run = async (env: Record<string, string>) => {

@@ -1,4 +1,4 @@
-import { mkdirSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
@@ -169,7 +169,8 @@ describe("Claude Code transcript reader (2.1.307 shapes)", () => {
   });
 
   it("drops lines from a nested repository under the root, and entries without a cwd before any had one", () => {
-    const dir = mkdtempSync(join(tmpdir(), "align-nested-"));
+    // Resolved: on macOS tmpdir() is a symlink (/var → /private/var), and the product always passes a resolved root.
+    const dir = realpathSync(mkdtempSync(join(tmpdir(), "align-nested-")));
     try {
       const root = join(dir, "repo");
       mkdirSync(join(root, "vendor", "other", ".git"), { recursive: true });

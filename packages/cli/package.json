@@ -1,6 +1,6 @@
 {
   "name": "@align-agent/cli",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Capture, confirm and serve your team's decisions from Claude Code, Cursor and Codex sessions.",
   "mcpName": "io.github.bharatreachdsp/align",
   "license": "MIT",
