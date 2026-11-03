@@ -8,12 +8,12 @@
     "source": "github"
   },
   "websiteUrl": "https://align.bharatreachdsp.com",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "packages": [
     {
       "registryType": "npm",
       "identifier": "@align-agent/cli",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "transport": {
         "type": "stdio"
       },

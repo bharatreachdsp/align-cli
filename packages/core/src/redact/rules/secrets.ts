@@ -56,6 +56,13 @@ function keepPrefix(re: RegExp, accept?: (value: string) => boolean) {
 // ------------------------------------------------------------------------- glued-aware bodies (L10b)
 
 /**
+ * `src` matched case-insensitively without the inline `(?i:…)` group: Node 22 (the CLI's floor, >= 22.14) rejects
+ * regular-expression modifiers, so each ASCII letter becomes a two-case class (`a` → `[aA]`). Equivalent only while the
+ * regexes built from it carry no `u` or `v` flag (with them, `(?i:…)` would also fold `ſ` and the Kelvin sign).
+ */
+const fold = (src: string) => src.replace(/[A-Za-z]/g, (c) => `[${c.toLowerCase()}${c.toUpperCase()}]`);
+
+/**
  * Where a glued-aware token body stops: where another vendor token starts, or at a credential name with its separator
  * (`…private_key_id: <value>`, `…SENTRY_DSN=<value>`), so the name stays for the credential rules. Only where the body
  * could not run on through that token: each alternative lists the characters its prefix always holds beyond letters
@@ -98,7 +105,7 @@ const STOPS: ReadonlyArray<readonly [string, string]> = [
   ["pscale_(?:pw|tkn|oauth)_[A-Za-z0-9_-]{20}", "_"],
   ["pypi-Ag[A-Za-z0-9_-]{40}", "-"],
   [
-    "(?:[_-](?:[A-Za-z0-9]{1,24}[_-]){0,4})?(?i:password|passwd|pwd|secret|token|api_?key|private_key(?:_id)?|dsn|credentials?)[ \\t]*[=:]",
+    `(?:[_-](?:[A-Za-z0-9]{1,24}[_-]){0,4})?(?:${fold("password|passwd|pwd|secret|token|api_?key|private_key(?:_id)?|dsn|credentials?")})[ \\t]*[=:]`,
     "=: _-",
   ],
 ];
