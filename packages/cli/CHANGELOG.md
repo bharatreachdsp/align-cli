@@ -1,5 +1,12 @@
 # @align-agent/cli
 
+## 0.1.5
+
+### Patch Changes
+
+- Same CLI code as 0.1.4. Released with the Claude Code plugin 0.1.5, whose launcher no longer names an unpinned
+  package runner in its error text (the plugin directory's validator refused it as a launcher).
+
 ## 0.1.4
 
 ### Patch Changes
