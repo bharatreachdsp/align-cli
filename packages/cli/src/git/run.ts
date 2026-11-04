@@ -42,6 +42,8 @@ export type GitHookDeps = {
   env?: NodeJS.ProcessEnv;
   /** Milliseconds since ALIGN's part started (the process's uptime in the bundle; since the call by default). */
   elapsed?: () => number;
+  /** The home hook-path git reads `~/.gitconfig` from, for in-process tests only (default: the account's home). */
+  gitHome?: string;
 };
 
 /**
@@ -69,15 +71,21 @@ const emailOf = (ident: string | null | undefined) =>
 /**
  * Whether the commit being written is authored by the person committing it. Git exports the author of the commit
  * being written to the hook (`GIT_AUTHOR_EMAIL`, also for `--amend` of someone else's commit); the committer is
- * `GIT_COMMITTER_EMAIL` when exported, else the configured identity. Only a known, different author skips (an identity
- * git cannot tell is not a reason).
+ * `GIT_COMMITTER_EMAIL` when exported, else the configured identity: `git var GIT_COMMITTER_IDENT`, else (that fails
+ * when git finds no name: one given only by `GIT_COMMITTER_NAME`, `-c user.name`, `GIT_CONFIG_GLOBAL` or a home other
+ * than the account's) the configured `user.email` alone, which needs no name (D1337). Only a known, different author
+ * skips (an identity git cannot tell is not a reason).
  */
-async function ownCommit(cwd: string, env: NodeJS.ProcessEnv): Promise<boolean> {
-  const author = env.GIT_AUTHOR_EMAIL?.trim().toLowerCase() || emailOf(await hookGit(["var", "GIT_AUTHOR_IDENT"], cwd));
+async function ownCommit(cwd: string, env: NodeJS.ProcessEnv, home?: string): Promise<boolean> {
+  const git = (args: string[]) => hookGit(args, cwd, GIT_TIMEOUT_MS, undefined, home);
+  const author = env.GIT_AUTHOR_EMAIL?.trim().toLowerCase() || emailOf(await git(["var", "GIT_AUTHOR_IDENT"]));
   // Hook-path git runs without GIT_* variables, so `git var` sees only the configured identity: an exported
   // GIT_COMMITTER_EMAIL is the committer git itself uses.
   const committer =
-    env.GIT_COMMITTER_EMAIL?.trim().toLowerCase() || emailOf(await hookGit(["var", "GIT_COMMITTER_IDENT"], cwd));
+    env.GIT_COMMITTER_EMAIL?.trim().toLowerCase() ||
+    emailOf(await git(["var", "GIT_COMMITTER_IDENT"])) ||
+    (await git(["config", "user.email"]))?.trim().toLowerCase() ||
+    null;
   return author === null || committer === null || author === committer;
 }
 
@@ -190,7 +198,7 @@ export async function prepareCommitMsg(args: readonly string[], deps: GitHookDep
   }
   if (hasSessionTrailer(message) || REVERT.test(message)) return;
   // Someone else's commit being reworded (`--amend -m` on a teammate's commit): git exports its author to the hook.
-  if (!(await ownCommit(deps.cwd, deps.env ?? process.env))) return;
+  if (!(await ownCommit(deps.cwd, deps.env ?? process.env, deps.gitHome))) return;
   // Too late to write safely before the wrapper's kill: no trailer this time (counted).
   const late = elapsed();
   if (late >= TRAILER_START_BY_MS) {

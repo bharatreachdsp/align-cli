@@ -364,6 +364,32 @@ describe("git-hook prepare-commit-msg and post-commit", () => {
     expect(await run({ GIT_AUTHOR_EMAIL: "me@acme.example" })).toBe(true);
   });
 
+  it("takes the committer from user.email when git finds no name (D1337)", async () => {
+    sb = sandbox();
+    register();
+    const paths = alignPaths(sb.alignHome);
+    session(now);
+    // Hook-path git reads an empty home (not this machine's ~/.gitconfig, which may carry a name), and the repository
+    // has an email but no name; useConfigOnly stops git guessing one from the password database, so `git var` fails.
+    gitIn(sb.repo, "config", "user.email", "Me@Acme.example");
+    gitIn(sb.repo, "config", "user.useConfigOnly", "true");
+    const gitHome = join(sb.dir, "git-home");
+    mkdirSync(gitHome, { recursive: true });
+    const msg = join(sb.dir, "MSG");
+    const run = async (env: Record<string, string>) => {
+      writeFileSync(msg, "reworded\n");
+      await prepareCommitMsg([msg, "message"], { paths, cwd: sb.repo, now: () => now, env, gitHome });
+      return readFileSync(msg, "utf8").includes("Align-Session");
+    };
+    // A teammate's commit being reworded: no trailer from this laptop.
+    expect(await run({ GIT_AUTHOR_EMAIL: "other@globex.example" })).toBe(false);
+    // The person's own commit still gets one (the email compares without case).
+    expect(await run({ GIT_AUTHOR_EMAIL: "me@acme.example" })).toBe(true);
+    // Nothing known at all (no email either): fail open, as before.
+    gitIn(sb.repo, "config", "--unset", "user.email");
+    expect(await run({ GIT_AUTHOR_EMAIL: "other@globex.example" })).toBe(true);
+  });
+
   it("skips the trailer step when ALIGN's part is already late (round 4, finding 7)", async () => {
     sb = sandbox();
     register();

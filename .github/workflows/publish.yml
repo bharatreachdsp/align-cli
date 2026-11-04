@@ -151,9 +151,10 @@ jobs:
           tar -xOzf "$tgz" package/package.json > "$RUNNER_TEMP/packed.json"
           node scripts/release-check.mjs --packed "$TAG" "$RUNNER_TEMP/packed.json"
       - name: Publish with trusted publishing
+        # "./" matters: npm reads a bare "out/<name>.tgz" as a GitHub repository ("out/<name>"), not a file (0.1.3).
         run: |
           DIST_TAG="$(node -p "require('./release.json').distTag")"
-          npm publish "$(ls out/*.tgz)" --ignore-scripts --provenance --access public --tag "$DIST_TAG"
+          npm publish "./$(ls out/*.tgz)" --ignore-scripts --provenance --access public --tag "$DIST_TAG"
 
   registry:
     needs: publish

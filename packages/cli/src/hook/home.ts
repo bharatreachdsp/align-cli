@@ -100,12 +100,16 @@ export function gitBinary(
   return fallbacks.find((f) => isAbsolute(f) && existsSync(f)) ?? null;
 }
 
-/** Runs git on a hook path (300 ms, sanitised environment); `input` goes to its stdin. Null on any failure. */
+/**
+ * Runs git on a hook path (300 ms, sanitised environment); `input` goes to its stdin. Null on any failure. `home`
+ * replaces the account's home for in-process tests only (a function argument, never an environment variable).
+ */
 export function hookGit(
   args: string[],
   cwd: string,
   timeoutMs = GIT_TIMEOUT_MS,
   input?: string,
+  home?: string,
 ): Promise<string | null> {
   const git = gitBinary();
   if (!git) return Promise.resolve(null);
@@ -113,7 +117,13 @@ export function hookGit(
     const child = execFile(
       git,
       [...HOOK_GIT_CONFIG, ...args],
-      { cwd, timeout: timeoutMs, maxBuffer: 4 * 1024 * 1024, windowsHide: true, env: gitEnv() },
+      {
+        cwd,
+        timeout: timeoutMs,
+        maxBuffer: 4 * 1024 * 1024,
+        windowsHide: true,
+        env: gitEnv(process.env, home ?? accountHome() ?? null),
+      },
       (err, stdout) => resolve(err ? null : stdout.toString()),
     );
     child.stdin?.on("error", () => {});

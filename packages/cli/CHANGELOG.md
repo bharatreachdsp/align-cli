@@ -1,10 +1,19 @@
 # @align-agent/cli
 
+## 0.1.4
+
+### Patch Changes
+
+- The first release on npm (0.1.3 passed every test, but its publish step gave npm the tarball's path without a
+  leading `./`, which npm reads as a GitHub repository; nothing was published). Same code as 0.1.3 plus one fix:
+- The git hook no longer adds this laptop's session trailer when rewording or amending a teammate's commit on a machine
+  where git finds an email but no name for the committer (it now falls back to the configured `user.email`).
+
 ## 0.1.3
 
 ### Patch Changes
 
-- The first published release (0.1.0 to 0.1.2 were tagged but never reached npm). Same code as 0.1.1; only tests
+- Tagged, not published (the publish step's tarball path; see 0.1.4). Same code as 0.1.1; only tests
   changed for GitHub's macOS runners: in-process hook tests use the git `align init` would record (the shim's
   `ALIGN_GIT`) instead of the slow `/usr/bin/git` wrapper, macOS gets 30 s per test and two test files at a time, and the over-1,024-character
   path test is skipped on macOS, where such a path cannot exist.
