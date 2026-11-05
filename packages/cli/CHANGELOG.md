@@ -1,5 +1,13 @@
 # @align-agent/cli
 
+## 0.1.7
+
+### Patch Changes
+
+- Same CLI code as 0.1.6. Released with the Claude Code plugin 0.1.7, whose launcher keeps `mcp` and `pack` to the
+  same short allow-list of variables by removing the others itself and then running `node`, instead of `env -i` with
+  expansions the plugin directory's validator cannot read (it refused that as a launcher whose program is computed).
+
 ## 0.1.6
 
 ### Patch Changes
