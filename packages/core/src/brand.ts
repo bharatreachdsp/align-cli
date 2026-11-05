@@ -102,6 +102,31 @@ export const CONTACT_DOMAIN = "bharatreachdsp.com";
 /** The site's absolute origin, or null while the domain is unknown. */
 export const SITE_URL: string | null = SITE_DOMAIN ? `https://${SITE_DOMAIN}` : null;
 
+/**
+ * The public demo ledger (L48, D556): production's agency share link (`<SITE_URL>/share#<token>`) of the internal demo
+ * organisation, which holds only synthetic content, as printed by `scripts/demo/seed.ts --env production` (4 Nov 2026,
+ * 365 days, until 4 Nov 2027). Null would hide the site's demo link (no dead link). Its token is public on purpose: it
+ * opens only that link.
+ */
+export const DEMO_LEDGER_URL: string | null =
+  "https://align.bharatreachdsp.com/share#EDUPlfINOXplfOa9cZZ1c9sgGMugb0Zk3jyw5DbGP2M";
+
+/**
+ * The demo video (docs/24): an https URL once it is published. Null until then; while null the landing page shows no
+ * demo slot and no "What the demo will show" link (L49: no placeholder, no dead link).
+ */
+export const DEMO_VIDEO_URL: string | null = null;
+
+/**
+ * The public launch day as the site says it (docs/22, L49): Show HN on Tue 10 Nov 2026. On a no-go at the go/no-go
+ * (Sun 8 Nov) the launch falls back to Tue 17 Nov: change this one line to "17 November 2026".
+ */
+export const PUBLIC_LAUNCH_DATE = "10 November 2026";
+
+/** The demo organisation's name and its one client's names on the share page (L48): clearly a demo. */
+export const DEMO_ORG_NAME = `${PRODUCT_NAME} demo`;
+export const DEMO_CLIENT = { name: "shop-checkout", clientName: "shop-checkout (a sample project)" } as const;
+
 /** A public contact address (`privacy`, `security`, `support`, `legal`) at `CONTACT_DOMAIN`. */
 export function contactAddress(mailbox: "privacy" | "security" | "support" | "legal"): string | null {
   return `${mailbox}@${CONTACT_DOMAIN}`;
@@ -114,5 +139,5 @@ export function contactAddress(mailbox: "privacy" | "security" | "support" | "le
  */
 export const SELLER_LEGAL_NAME: string | null = "Sakuraj Technologies Private Limited";
 
-/** The open-source client's public repository (the CLI mirror, MIT). */
+/** The client's public repository (the CLI mirror; MIT licence). */
 export const SOURCE_REPO_URL = "https://github.com/bharatreachdsp/align-cli";

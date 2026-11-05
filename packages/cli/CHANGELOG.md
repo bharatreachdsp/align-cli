@@ -1,5 +1,13 @@
 # @align-agent/cli
 
+## 0.1.6
+
+### Patch Changes
+
+- Same CLI code as 0.1.5. Released with the Claude Code plugin 0.1.6, whose launcher spells every program it runs
+  literally (`node`, the installed `~/.align/bin/align`) instead of a path computed at run time, which the plugin
+  directory's validator refused as a launcher.
+
 ## 0.1.5
 
 ### Patch Changes
